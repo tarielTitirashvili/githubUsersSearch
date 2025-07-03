@@ -23,14 +23,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const broken: string = 123
-
+  
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {broken}
         <Header />
         {children}
       </body>
