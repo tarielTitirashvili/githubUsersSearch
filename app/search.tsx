@@ -10,20 +10,22 @@ import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { AlertDialogDemo } from '@/components/shared/errorModal'
 
 type Props = {
+  query: string
   getRepos: (query: string) => void
+  errorMessage: string
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>
+  setQuery: React.Dispatch<React.SetStateAction<string>>
 }
 
-const Search = ({ getRepos }: Props) => {
+const Search = ({ getRepos, query, setQuery, errorMessage, setErrorMessage }: Props) => {
   const searchParams = useSearchParams()
 
-  const [query, setQuery] = useState<string>(searchParams.get('search') || '')
   const [suggestions, setSuggestions] = useState<GitHubUser[]>([])
   const [loading, setLoading] = useState<boolean>(
     searchParams.get('search') ? true : false
   )
   const touchedRef = useRef<boolean>(false)
   const searchClicked = useRef<boolean>(false)
-  const [errorMessage, setErrorMessage] = useState<string>('')
   const router = useRouter()
   // pagination
   const [page, setPage] = useState<number>(1)

@@ -1,4 +1,4 @@
-import { BASE_URL, USERS_PER_PAGE } from './constants'
+import { BASE_URL, REPOS_PER_PAGE, USERS_PER_PAGE } from './constants'
 
 export type GitHubUser = {
   login: string
@@ -79,12 +79,19 @@ export type GitHubRepo = {
   }
 }
 
+export type Error = {
+  message?: string
+}
+
+
 export const fetchUserRepos = async (
   username: string,
-  onSuccess: (repos: GitHubRepo[]) => void
+  page: number,
+  onSuccess: (repos: GitHubRepo[]) => void,
+  onError: (error: Error) => void = () => {}
 ) => {
   try {
-    const response = await fetch(`${BASE_URL}/users/${username}/repos`)
+    const response = await fetch(`${BASE_URL}/users/${username}/repos?per_page=${REPOS_PER_PAGE}&page=${page}`)
 
     if (!response.ok) {
       const errorData = await response.json()
@@ -93,8 +100,9 @@ export const fetchUserRepos = async (
 
     const data = await response.json()
     onSuccess(data)
-  } catch (error) {
-    console.error('Error fetching repos:', error)
+  } catch (e: unknown) {
+    console.error('Error fetching repos:', e)
+    onError(e as Error)
     return null
   }
 }

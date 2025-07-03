@@ -72,7 +72,7 @@ export default function UserSuggestions({
     <Dialog>
       <ul
         ref={containerRef}
-        className="absolute w-xs bg-white border rounded shadow mt-1 z-10 max-h-[310px] overflow-auto"
+        className="absolute w-xs border mt-1 z-10 max-h-[310px] overflow-auto shadow-lg bg-white rounded"
       >
         <span className="relative">
           <X

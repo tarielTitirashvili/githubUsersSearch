@@ -1,19 +1,52 @@
 import { GitHubRepo } from '@/API'
-import CustomAvatar from '@/components/shared/avatar'
-import { Computer, Star } from 'lucide-react'
-import Link from 'next/link'
-import React from 'react'
+import ReposMap from '@/components/features/repos/reposMap'
+import { Computer } from 'lucide-react'
+import React, { useEffect, useRef, useState } from 'react'
 
 type Props = {
   repos: GitHubRepo[]
+  setPage?: React.Dispatch<React.SetStateAction<number>>
+  hasNextPageRef?: React.MutableRefObject<boolean>
 }
 
 const Repos = (props: Props) => {
-  const { repos } = props
+  const { repos, setPage, hasNextPageRef } =props
+  const containerRef = useRef<HTMLUListElement | null>(null)
+  const loadingRef = useRef(false)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container || !setPage) return
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = container
+
+      // Trigger 150px before reaching bottom
+      const nearBottom = scrollTop + clientHeight >= scrollHeight - 150
+      if (nearBottom && !loadingRef.current && hasNextPageRef?.current) {
+        setLoading(true)
+        loadingRef.current = true
+        setPage((prevPage: number): number => prevPage + 1)
+      }
+    }
+
+    container.addEventListener('scroll', handleScroll)
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [setPage, hasNextPageRef])
+
+  // Reset loading flag when repos change
+  useEffect(() => {
+    setLoading(false)
+    loadingRef.current = false
+  }, [repos, hasNextPageRef])
 
   return (
     <div>
-      <ul className="flex flex-col gap-2 overflow-auto h-[50vh] max-w-[340px]">
+      <ul
+        ref={containerRef}
+        className="flex flex-col gap-2 overflow-x-hidden overflow-y-auto h-[50vh] max-w-[340px]"
+      >
         {repos.length > 0 && (
           <>
             <Computer />
@@ -22,58 +55,7 @@ const Repos = (props: Props) => {
                 ? 'Repos off user ' + repos[0].owner.login
                 : 'Repos'}
             </h3>
-            {repos.map((repo) => (
-              <Link
-                href={`/${repo.owner.login}/${repo.name}`}
-                key={repo.id}
-                className="block border rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition p-4"
-              >
-                <div className="flex items-start gap-4">
-                  {/* Avatar */}
-                  <div className="shrink-0">
-                    <CustomAvatar
-                      src={repo.owner.avatar_url}
-                      alt={`Avatar of ${repo.owner.login}`}
-                      fallback={`avatar picture for ${repo.owner.login}`}
-                    />
-                  </div>
-                  {/* Repo Info */}
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <h2 className="text-lg font-semibold text-gray-900">
-                        {repo.name}
-                      </h2>
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault()
-                          e.stopPropagation()
-                          window.open(
-                            repo.html_url,
-                            '_blank',
-                            'noopener noreferrer'
-                          )
-                        }}
-                        className="text-sm text-blue-500 hover:underline"
-                      >
-                        Open
-                      </button>
-                    </div>
-
-                    {repo.description && (
-                      <p className="text-sm text-gray-700 mt-1">
-                        {repo.description}
-                      </p>
-                    )}
-
-                    {/* Stars */}
-                    <div className="mt-2 flex items-center gap-1 text-sm text-gray-600">
-                      <Star width={15} />
-                      {repo.stargazers_count}
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
+            <ReposMap repos={repos} loading={loading} />
           </>
         )}
       </ul>
