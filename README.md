@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GitHub User Search App
 
-## Getting Started
+A modern, responsive web application built with **Next.js**, allowing users to search for GitHub profiles and view detailed information including repositories.
 
-First, run the development server:
+---
 
-```bash
+## 🚀 Features
+
+- 🔍 GitHub username autocomplete with debounce and infinite scroll
+- 📄 Detailed user view with repository list
+- 💎 Responsive UI using Tailwind CSS and shadcn/ui
+- ⚡ Powered by Next.js 15 and Turbopack for fast performance
+
+---
+
+## 🧪 Technologies Used
+
+- **Next.js 14** — React framework for building fast, SEO-friendly web apps
+- **TypeScript** — Type-safe development experience
+- **Tailwind CSS** — Utility-first CSS framework
+- **shadcn/ui** — Beautifully styled and customizable UI components
+- **GitHub REST API** — For fetching user and repository data
+- **ESLint** — For maintaining code quality
+
+---
+
+### Prerequisites
+
+Make sure you have **Node.js (v22)** and **npm** installed.
+
+### Installation
+
+1. **Clone the repository:**
+  ```bash
+  git clone https://github.com/tarielTitirashvili/githubSearch.git
+
+## 📦 Getting Started
+
+🛠️ Available Scripts
+In the project directory, you can run:
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Runs the app in development mode using Turbopack.
+Open http://localhost:3000 to view it in the browser.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+npm run build
+Builds the app for production. Outputs static and server-rendered files.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+npm run start
+Starts the production build.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+npm run lint
+Runs ESLint to check for linting errors.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
