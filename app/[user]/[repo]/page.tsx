@@ -6,7 +6,7 @@ import React from 'react'
 import Repo from './repo'
 
 type Props = {
-  params: ParamsType
+  params: Promise<ParamsType>
 }
 
 export const generateMetadata = async (props: Props): Promise<Metadata> => {
@@ -18,12 +18,10 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
   }
 }
 
-export default async function RepoPage({
-  params,
-}: {
-  params: { user: string; repo: string }
-}) {
-  const repoParams: ParamsType = await params
+import { use } from "react";
+    
+export default function RepoPage({params}: {params: Promise<ParamsType>}) {
+const repoParams: ParamsType = use(params);
 
 
   return (
